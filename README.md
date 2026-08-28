@@ -146,7 +146,6 @@ orbshacker/
 │   ├── faker.py           Fake executable creation and launch logic
 │   ├── discord_db.py      Game database loading, search, and selection
 │   ├── steam.py           Steam registry helpers and manifest generation
-│   ├── updater.py         Auto-update from GitHub releases
 │   ├── net.py             HTTP helpers
 │   ├── ui.py              Terminal colors, animations, prompts
 │   └── errors.py          Custom exception hierarchy
@@ -162,13 +161,13 @@ orbshacker/
 
 ## Configuration
 
-User-editable values live in `settings.py` at the project root. The file is loaded at startup and overrides any default from `orbshacker/config.py`. Runtime preferences and API timeouts go there. The application version comes from the git tag used for the build and is not user-configurable; changing it manually would break update detection.
+User-editable values live in `settings.py` at the project root. The file is loaded at startup and overrides any default from `orbshacker/config.py`. Runtime preferences live there. The application version comes from the git tag used for the build and is not user-configurable.
 
 <br/>
 
-## Auto-updater
+## Releases
 
-When a new version tag is pushed, GitHub Actions builds a standalone Windows executable using PyInstaller and publishes it as a GitHub Release. The tool checks for updates on launch, downloads the new binary, swaps it in place, and restarts automatically. No Python installation needed to run the distributed executable.
+When a new version tag is pushed, GitHub Actions builds a standalone Windows executable using PyInstaller and publishes it as a GitHub Release. Updates are manual; the application does not download or replace its own executable.
 
 <br/>
 
