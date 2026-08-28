@@ -182,13 +182,14 @@ def test_timer_self_destruction(tmp_path):
         with patch.object(TimerApp, "_tick"):
             app = TimerApp(root, minutes=15)
 
-        # Mock files next to executable
+        # Mock fake executable next to an unrelated settings.json.
+        # The cleanup must never delete that pre-existing file.
         exe_path = tmp_path / "Win64" / "TslGame.exe"
         exe_path.parent.mkdir()
         exe_path.touch()
 
         settings_path = exe_path.parent / "settings.json"
-        settings_path.touch()
+        settings_path.write_text('{"belongs_to": "another_app"}', encoding="utf-8")
 
         with patch("sys.frozen", True, create=True), \
              patch("sys.executable", str(exe_path)), \
@@ -201,8 +202,9 @@ def test_timer_self_destruction(tmp_path):
             mock_popen.assert_called_once()
             called_cmd = mock_popen.call_args[1].get("args", mock_popen.call_args[0][0])
             assert "TslGame.exe" in called_cmd
-            assert "settings.json" in called_cmd
+            assert "settings.json" not in called_cmd
             assert "appmanifest_123.acf" in called_cmd
+            assert settings_path.read_text(encoding="utf-8") == '{"belongs_to": "another_app"}'
 
             # Verify UI clean shutdown
             root.destroy.assert_called_once()
