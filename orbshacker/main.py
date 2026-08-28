@@ -12,17 +12,11 @@ from .ui import Colors, print_color, print_banner, print_menu, show_credits
 from .faker import GameFaker, manual_mode
 from .discord_db import DiscordGamesDB, database_mode
 from .steam import steam_quest_mode
-from .updater import auto_update
 from .errors import DatabaseLoadError
 
 
 def main() -> None:
     """Main application loop."""
-    try:
-        auto_update()
-    except Exception:
-        pass
-
     print_banner()
     print_color("Initializing Discord Orb Quest Faker...", Colors.CYAN)
     print_color("[*] Connecting to Discord API...", Colors.GRAY)
